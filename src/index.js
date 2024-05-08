@@ -1,14 +1,26 @@
-const{ Client, IntentsBitsField} = require('discord.js');
+require("dotenv").config();
 
-const client = new Client({ 
-    intents: [
-        IntentsBitsField.Flags.Guilds,
-        IntentsBitsField.Flags.GuildMessages,
-        IntentsBitsField.Flags.GuildMembers,
-        IntentsBitsField.Flags.MesssageContent,
-    ] 
+const { DISCORD_TOKEN } = process.env;
+
+const { Client, Collection, GatewayIntentBits } = require("discord.js");
+const fs = require("fs");
+
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
 });
 
-client.login(
-    "MTIzNzUxNjcwMTE4MTAyMjMxOQ.GzhNOl.UxNBkw0JTmyqrTJH_JdCwnRWfk3DA36XGRLNQc"
-);
+client.commands = new Collection();
+client.commandArray = [];
+
+const functionFolders = fs.readdirSync("./src/functions");
+for (const folder of functionFolders) {
+  const functionFiles = fs
+    .readdirSync(`./src/functions/${folder}`)
+    .filter((file) => file.endsWith(".js"));
+    for (const file of functionFiles) {
+      require(`./functions/${folder}/${file}`)(client);
+      
+    }
+}
+
+
