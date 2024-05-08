@@ -24,9 +24,9 @@ const client = new Client({
 client.login(process.env.DISCORD_TOKEN);
 
 const btn = new ButtonBuilder()
-    .setStyle(ButtonStyle.PRIMARY)
-    .setLabel('Click me!')
-    .setCustomId('click_me');
+    .setCustomId('penis')
+    .setLabel('i love penis')
+    .setStyle(ButtonStyle.Primary)
 
 
 
@@ -41,3 +41,13 @@ client.on('messageCreate', async (message) => {
         })
     }
 });
+
+client.on('interactionCreate', async interaction => {
+
+    if (interaction.customId === 'penis'){
+        await interaction.reply({
+            content: 'Mom says hi back!',
+            ephemeral: true
+        })
+    }
+})
